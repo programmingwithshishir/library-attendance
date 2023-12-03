@@ -1,0 +1,5 @@
+.vs
+Library/bin
+Library/obj
+Setup/Debug
+Setup/Release
