@@ -24,7 +24,7 @@ namespace Library {
             try {
                 driver = new ChromeDriver();
                 driver.Manage().Window.Maximize();
-                driver.Navigate().GoToUrl("https://alvasdc.easylib.net/index.php/memberController");
+                driver.Navigate().GoToUrl("https://alvasdegree.easylib.net/index.php/memberController");
                 driver.FindElement(By.XPath("//*[@id=\"right\"]/div[1]/span")).Click();
                 driver.FindElement(By.XPath("//*[@id=\"right\"]/div[1]/div/a[2]")).Click();
                 await WaitForElementVisibility(driver.FindElement(By.XPath("//*[@id=\"myModalMember\"]/div/div/form/div[2]/div[1]/div/input")), TimeSpan.FromSeconds(10));
@@ -36,20 +36,21 @@ namespace Library {
                     driver.Quit();
                     return;
                 }
-                await WaitForElementVisibility(driver.FindElement(By.XPath("//*[@id=\"allProfiles\"]/a[2]/b/u")), TimeSpan.FromSeconds(10));
-                driver.FindElement(By.XPath("//*[@id=\"allProfiles\"]/a[2]/b/u")).Click();
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
+                driver.FindElement(By.XPath("/html/body/div[4]/div[2]/div/div[1]/ul/a[3]/b/u")).Click();
+                Thread.Sleep(1000);
                 driver.FindElement(By.XPath("//*[@id=\"inOutHistoryMember\"]")).Click();
                 Thread.Sleep(1000);
                 driver.FindElement(By.XPath("//*[@id=\"inoutHistoryTable_length\"]/label/select")).Click();
+                Thread.Sleep(1000);
                 driver.FindElement(By.XPath("//*[@id=\"inoutHistoryTable_length\"]/label/select/option[2]")).Click();
-                await WaitForElementVisibility(driver.FindElement(By.XPath("//*[@id=\"inoutHistoryTableBody\"]/tr[1]")), TimeSpan.FromSeconds(10));
+                Thread.Sleep(1000);
 
                 table.clear();
                 while (true) {
                     getEntriesInPage();
-                    if (driver.FindElement(By.ClassName("next")).GetAttribute("class").Contains("disabled")) break;
-                    else driver.FindElement(By.ClassName("next")).Click();
+                    if (driver.FindElement(By.Id("inoutHistoryTable_next")).GetAttribute("class").Contains("disabled")) break;
+                    else driver.FindElement(By.Id("inoutHistoryTable_next")).Click();
                 }
                 this.WindowState = FormWindowState.Minimized;
                 this.Show();
@@ -141,7 +142,7 @@ namespace Library {
             this.outTime = outTime;
         }
         public bool checkIfConsidered() {
-            if (inTime.Minute < consideredInTime && outTime.Minute > consideredOutTime) return true;
+            if (inTime.Minute <= consideredInTime && outTime.Minute >= consideredOutTime) return true;
             if ((outTime - inTime).TotalMinutes >= 50) return true;
             return false;
         }
